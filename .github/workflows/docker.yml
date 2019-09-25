@@ -1,0 +1,49 @@
+name: docker
+on:
+  push:
+    branches:
+      - docker
+jobs:
+  docker:
+    name: Build and test Docker image
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        baseImage:
+          - node:10-alpine
+          - arm32v7/node:10-alpine
+        include:
+          - baseImage: node:10-alpine
+            s6Arch: amd64
+          - baseImage: arm32v7/node:10-alpine
+            s6Arch: arm
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@master
+      - run: docker --version
+      - name: Prepare for ARM
+        if: matrix.baseImage == 'arm32v7/node:10-alpine'
+        run: docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+      - name: Build Docker image
+        run: |-
+          docker build \
+            -t joshava/cloudflare-ddns \
+            --build-arg BASE_IMAGE=${{ matrix.baseImage }} \
+            --build-arg OVERLAY_ARCH=${{ matrix.s6Arch }} \
+            .
+      - name: Run unit tests
+        run: docker run -i --entrypoint "" joshava/cloudflare-ddns npm run test
+      - name: Docker manifest inspect
+        run: docker manifest inspect joshava/cloudflare-ddns
+        env:
+          DOCKER_CLI_EXPERIMENTAL: enabled
+  buildx:
+    name: Build multiarch
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@master
+      - name: Buildx
+        run: docker buildx ls
+        env:
+          DOCKER_CLI_EXPERIMENTAL: enabled
