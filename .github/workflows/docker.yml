@@ -51,3 +51,15 @@ jobs:
           version: latest
       - name: docker
         run: docker buildx ls
+      - name: Build
+        run: |
+          docker buildx build \
+            --platform linux/amd64,linux/arm/v7 \
+            --output "type=image,push=false" \
+            --file ./Dockerfile.1 \
+            -t joshava/cloudflare-ddns \
+            .
+      - name: Docker manifest inspect
+        run: docker manifest inspect -v joshava/cloudflare-ddns
+        env:
+          DOCKER_CLI_EXPERIMENTAL: enabled
