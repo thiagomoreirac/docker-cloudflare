@@ -45,9 +45,9 @@ jobs:
     steps:
       - name: Checkout project
         uses: actions/checkout@master
-      - name: docker
-        uses: docker://docker
+      - name: Set up Docker Buildx
+        uses: crazy-max/ghaction-docker-buildx@master
         with:
-          args: echo "$DOCKER_CLI_EXPERIMENTAL"
-        env:
-          DOCKER_CLI_EXPERIMENTAL: enabled
+          version: latest
+      - name: docker
+        run: docker buildx ls
