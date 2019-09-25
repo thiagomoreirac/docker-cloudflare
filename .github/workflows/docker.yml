@@ -39,3 +39,15 @@ jobs:
         run: docker manifest inspect -v joshava/cloudflare-ddns
         env:
           DOCKER_CLI_EXPERIMENTAL: enabled
+  buildx:
+    name: Build and test Docker image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@master
+      - name: docker
+        uses: docker://docker
+        with:
+          args: docker buildx ls
+        env:
+          DOCKER_CLI_EXPERIMENTAL: enabled
