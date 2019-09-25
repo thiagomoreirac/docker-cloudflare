@@ -83,3 +83,5 @@ jobs:
             .
       - name: Run unit tests
         run: docker run -i --entrypoint "" joshava/cloudflare-ddns npm run test
+      - name: Docker manifest inspect
+        run: docker manifest inspect joshava/cloudflare-ddns
