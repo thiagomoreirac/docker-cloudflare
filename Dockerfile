@@ -4,7 +4,7 @@ ARG BASE_IMAGE=node:10-alpine
 ARG OVERLAY_VERSION=v1.22.1.0
 ARG OVERLAY_ARCH=amd64
 
-FROM --platform $BUILDPLATFORM node:10-alpine AS builder
+FROM node:10-alpine AS builder
 
 ARG OVERLAY_VERSION
 ARG OVERLAY_ARCH
@@ -20,7 +20,7 @@ COPY package.json tsconfig.json /app/
 RUN npm install && \
     npm run build
 
-FROM --platform $BUILDPLATFORM node:10-alpine
+FROM node:10-alpine
 
 ARG OVERLAY_VERSION
 ARG OVERLAY_ARCH

@@ -30,7 +30,6 @@ jobs:
             -t joshava/cloudflare-ddns \
             --build-arg BASE_IMAGE=${{ matrix.baseImage }} \
             --build-arg OVERLAY_ARCH=${{ matrix.s6Arch }} \
-            --platform \
             .
         env:
           DOCKER_CLI_EXPERIMENTAL: enabled
