@@ -85,3 +85,5 @@ jobs:
         run: docker run -i --entrypoint "" joshava/cloudflare-ddns npm run test
       - name: Docker manifest inspect
         run: docker manifest inspect joshava/cloudflare-ddns
+        env:
+          DOCKER_CLI_EXPERIMENTAL: enabled
