@@ -40,7 +40,7 @@ jobs:
         env:
           DOCKER_CLI_EXPERIMENTAL: enabled
   buildx:
-    name: Build and test Docker image
+    name: buildx
     runs-on: ubuntu-latest
     steps:
       - name: Checkout project
