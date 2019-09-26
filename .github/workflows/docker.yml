@@ -12,6 +12,9 @@ jobs:
         uses: actions/checkout@master
       - name: Login DockerHub
         run: echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+        env:
+          DOCKER_USER: ${{ secrets.DOCKER_USER }}
+          DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
       - name: Install docker buildx
         uses: crazy-max/ghaction-docker-buildx@master
         with:
