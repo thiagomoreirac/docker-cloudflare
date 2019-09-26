@@ -60,6 +60,6 @@ jobs:
             -t joshava/cloudflare-ddns \
             .
       - name: docker buildx imagetools inspect
-        run: docker buildx imagetools inspect -v joshava/cloudflare-ddns
+        run: docker buildx imagetools inspect joshava/cloudflare-ddns
         env:
           DOCKER_CLI_EXPERIMENTAL: enabled
