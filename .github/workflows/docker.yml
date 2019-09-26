@@ -22,7 +22,7 @@ jobs:
             --platform linux/amd64,linux/arm/v7 \
             -o type=registry \
             --file ./Dockerfile.1 \
-            -t docker.pkg.github.com/joshuaavalon/test-github-action/docker \
+            -t docker.pkg.github.com/joshuaavalon/docker-cloudflare/docker \
             .
       - name: docker buildx imagetools inspect
         run: docker buildx imagetools inspect docker.pkg.github.com/joshuaavalon/docker-cloudflare/docker
