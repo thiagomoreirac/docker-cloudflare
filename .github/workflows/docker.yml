@@ -55,7 +55,7 @@ jobs:
         run: |
           docker buildx build \
             --platform linux/amd64,linux/arm/v7 \
-            -o \
+            -o type=registry \
             --file ./Dockerfile.1 \
             -t joshava/cloudflare-ddns2 \
             .
