@@ -59,7 +59,7 @@ jobs:
             --file ./Dockerfile.1 \
             -t joshava/cloudflare-ddns \
             .
-      - name: Docker manifest inspect
-        run: docker manifest inspect -v joshava/cloudflare-ddns
+      - name: docker buildx imagetools inspect
+        run: docker buildx imagetools inspect -v joshava/cloudflare-ddns
         env:
           DOCKER_CLI_EXPERIMENTAL: enabled
