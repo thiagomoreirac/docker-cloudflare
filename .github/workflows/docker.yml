@@ -50,7 +50,7 @@ jobs:
         with:
           version: latest
       - name: docker
-        run: docker buildx ls && docker buildx inspect --bootstrap && docker buildx use nubuilder
+        run: docker buildx ls
       - name: Build
         run: |
           docker buildx build \
