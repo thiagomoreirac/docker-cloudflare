@@ -10,8 +10,8 @@ jobs:
     steps:
       - name: Checkout project
         uses: actions/checkout@master
-      - name: Login GitHub package registry
-        run: docker login docker.pkg.github.com --username joshuaavalonbot -p ${{ secrets.PERSONAL_TOKEN }}
+      - name: Login DockerHub
+        run: echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
       - name: Install docker buildx
         uses: crazy-max/ghaction-docker-buildx@master
         with:
@@ -22,9 +22,9 @@ jobs:
             --platform linux/amd64,linux/arm/v7 \
             -o type=registry \
             --file ./Dockerfile.1 \
-            -t docker.pkg.github.com/joshuaavalon/docker-cloudflare/docker \
+            -t joshava/cloudflare-ddns-test \
             .
       - name: docker buildx imagetools inspect
-        run: docker buildx imagetools inspect docker.pkg.github.com/joshuaavalon/docker-cloudflare/docker
+        run: docker buildx imagetools inspect joshava/cloudflare-ddns-test
         env:
           DOCKER_CLI_EXPERIMENTAL: enabled
