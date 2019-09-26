@@ -12,12 +12,10 @@ jobs:
         uses: actions/checkout@master
       - name: Login GitHub package registry
         run: docker login docker.pkg.github.com --username joshuaavalonbot -p ${{ secrets.PERSONAL_TOKEN }}
-      - name: Set up Docker Buildx
+      - name: Install docker buildx
         uses: crazy-max/ghaction-docker-buildx@master
         with:
           version: latest
-      - name: docker
-        run: docker buildx ls
       - name: Build
         run: |
           docker buildx build \
@@ -27,6 +25,6 @@ jobs:
             -t docker.pkg.github.com/joshuaavalon/test-github-action/docker \
             .
       - name: docker buildx imagetools inspect
-        run: docker buildx imagetools inspect docker.pkg.github.com/joshuaavalon/test-github-action/docker
+        run: docker buildx imagetools inspect docker.pkg.github.com/joshuaavalon/docker-cloudflare/docker
         env:
           DOCKER_CLI_EXPERIMENTAL: enabled
