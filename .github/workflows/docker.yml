@@ -57,9 +57,9 @@ jobs:
             --platform linux/amd64,linux/arm/v7 \
             --output "type=image,push=false" \
             --file ./Dockerfile.1 \
-            -t joshava/cloudflare-ddns \
+            -t joshava/cloudflare-ddns2 \
             .
       - name: docker buildx imagetools inspect
-        run: docker buildx imagetools inspect joshava/cloudflare-ddns
+        run: docker buildx imagetools inspect joshava/cloudflare-ddns2
         env:
           DOCKER_CLI_EXPERIMENTAL: enabled
