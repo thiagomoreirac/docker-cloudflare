@@ -22,8 +22,16 @@ jobs:
       - name: Build
         run: |
           docker buildx build \
-            --platform linux/amd64,linux/arm/v7 \
-            -o type=registry \
+            --platform linux/amd64 \
+            --push \
+            --file ./Dockerfile.1 \
+            -t joshava/cloudflare-ddns-test \
+            .
+      - name: Build
+        run: |
+          docker buildx build \
+            --platform linux/arm/v7 \
+            --push \
             --file ./Dockerfile.1 \
             -t joshava/cloudflare-ddns-test \
             .
