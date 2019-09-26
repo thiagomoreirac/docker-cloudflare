@@ -4,47 +4,14 @@ on:
     branches:
       - docker
 jobs:
-  docker:
-    name: Build and test Docker image
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        baseImage:
-          - node:10-alpine
-          - arm32v7/node:10-alpine
-        include:
-          - baseImage: node:10-alpine
-            s6Arch: amd64
-          - baseImage: arm32v7/node:10-alpine
-            s6Arch: arm
-    steps:
-      - name: Checkout project
-        uses: actions/checkout@master
-      - run: docker --version
-      - name: Prepare for ARM
-        if: matrix.baseImage == 'arm32v7/node:10-alpine'
-        run: docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-      - name: Build Docker image
-        run: |-
-          docker build \
-            -t joshava/cloudflare-ddns \
-            --build-arg BASE_IMAGE=${{ matrix.baseImage }} \
-            --build-arg OVERLAY_ARCH=${{ matrix.s6Arch }} \
-            .
-        env:
-          DOCKER_CLI_EXPERIMENTAL: enabled
-      - name: Run unit tests
-        run: docker run -i --entrypoint "" joshava/cloudflare-ddns npm run test
-      - name: Docker manifest inspect
-        run: docker manifest inspect -v joshava/cloudflare-ddns
-        env:
-          DOCKER_CLI_EXPERIMENTAL: enabled
   buildx:
     name: buildx
     runs-on: ubuntu-latest
     steps:
       - name: Checkout project
         uses: actions/checkout@master
+      - name: Login GitHub package registry
+        run: docker login docker.pkg.github.com --username joshuaavalonbot -p ${{ secrets.PERSONAL_TOKEN }}
       - name: Set up Docker Buildx
         uses: crazy-max/ghaction-docker-buildx@master
         with:
@@ -57,11 +24,9 @@ jobs:
             --platform linux/amd64,linux/arm/v7 \
             -o type=registry \
             --file ./Dockerfile.1 \
-            -t joshava/cloudflare-ddns2 \
+            -t docker.pkg.github.com/joshuaavalon/test-github-action/docker \
             .
-      - name: docker image ls
-        run: docker image ls
       - name: docker buildx imagetools inspect
-        run: docker buildx imagetools inspect joshava/cloudflare-ddns2
+        run: docker buildx imagetools inspect docker.pkg.github.com/joshuaavalon/test-github-action/docker
         env:
           DOCKER_CLI_EXPERIMENTAL: enabled
